@@ -22,9 +22,16 @@ jobs:
         uses: r-lib/actions/setup-renv@v2
       - name: Retrieve data
         run:  Rscript -e 'source("R/Retrieve_GHCN_USW00014839.R")'
+      - name: Commit data
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add --all
+          git commit -am "add data"
+          git push 
       - name: Build graph
         run:  Rscript -e 'source("R/BuildDailyHigh.R")'
-      - name: Commit files
+      - name: Commit graph
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
