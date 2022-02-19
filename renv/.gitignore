@@ -4,3 +4,4 @@ cellar/
 lock/
 python/
 staging/
+.DS_Store
