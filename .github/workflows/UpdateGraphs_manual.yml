@@ -21,7 +21,7 @@ jobs:
           # use RStudio's CRAN mirror with precompiled binaries
           use-public-rspm: true
       - name: Cache packages
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ env.RENV_PATHS_ROOT }}
           key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
