@@ -183,6 +183,6 @@ max.graph2 <- max.graph +
                            direction = "y", hjust = 1, nudge_x = -5)
 
 ggsave("graphs/DailyHighTemp_USW00014839.png", plot = max.graph2,
-       width = 8)
+       width = 8, height = 4)
 
 
