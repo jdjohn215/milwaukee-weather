@@ -9,7 +9,7 @@ jobs:
   render:
     name: Update graphs
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 5
     env:
       RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
@@ -33,7 +33,12 @@ jobs:
           if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
           renv::restore()
       - name: Retrieve data
-        run:  Rscript -e 'source("R/Retrieve_GHCN_USW00014839.R")'
+        uses: nick-fields/retry@v2
+        with:
+          timeout_seconds: 30
+          max_attempts: 3
+          command: Rscript -e 'source("R/Retrieve_GHCN_USW00014839.R")'
+          continue_on_error: true
       - name: Commit data
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
