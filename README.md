@@ -22,7 +22,7 @@ Menne, M.J., I. Durre, B. Korzeniewski, S. McNeal, K. Thomas, X. Yin, S. Anthony
 
 ## Accessing data for a different station
 
-For every weather station in the daily GHCN, NOAA maintains a file with the station's entire daily history. Each day, they append a new record. In my observation, records are typically lagged by a day or two.
+For every weather station in the daily GHCN, NOAA maintains a file with the station's entire daily history. Each day, they append a new record. In my observation, records are typically lagged by a few days.
 
 Each weather station is assigned a unique indicator. The full list of station names, coordinates, and unique IDs is [available here](https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/ghcnd-stations.txt).
 
@@ -33,4 +33,11 @@ Refer to `R/Retrieve_GHCN_USW00014839.R` for a demonstration of downloading and 
 
 ## Replicating or altering the graph
 
-The image `graphs/DailyHighTemp_USW00014839.png` is created by `R/BuidlDailyHigh.R`. See the README in [/graphs](/graphs) for a detailed step-by-step tutorial.
+The image `graphs/DailyHighTemp_USW00014839.png` is created by `R/BuidlDailyHigh.R`. See the README in [/graphs](/graphs) for a step-by-step tutorial.
+
+## Automatic Updating with Github Actions
+
+At a high level, the automated workflow (1) runs the script to retrieve the updated data, (2) commits the updated dataset to the repository, (2) runs the script to build the graph, and (4) commits the graph to the repository. All this takes less than 1 minute per run.
+
+See the README in [/.github/workflows](/.github/workflows) for a line-by-line discussion of the workflow file.
+
