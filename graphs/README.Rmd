@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Step 1. Retrieve the data.
 
-```{r}
+```{r step1}
 library(ggplot2)
 library(readr)
 library(tidyr)
@@ -26,7 +26,7 @@ head(ghcn)
 
 Step 2. Identify latest year and day.
 
-```{r}
+```{r step2}
 year.to.plot <- max(ghcn$year)
 last.date <- max(ghcn$date)
 
@@ -36,7 +36,7 @@ this.year <- ghcn %>%
 
 Step3. Calculate summary values for previous years.
 
-```{r}
+```{r step3}
 daily.summary.stats <- ghcn %>%
   # remove this year
   filter(year != year.to.plot) %>%
@@ -57,7 +57,7 @@ head(daily.summary.stats)
 
 Step 4. Identify the day of year on which each month begins
 
-```{r}
+```{r step4}
 # month breaks
 month.breaks <- ghcn %>%
   filter(year == 2019) %>%
@@ -71,7 +71,7 @@ head(month.breaks)
 
 Step 5. Identify any records set this year.
 
-```{r}
+```{r step5}
 record.status.this.year <- this.year %>%
   select(day_of_year, PRCP, TMAX, TMIN) %>%
   pivot_longer(cols = -day_of_year, values_to = "this_year") %>%
@@ -86,7 +86,7 @@ head(record.status.this.year)
 ```
 
 Step 6. Set up the graph.
-```{r, fig.width=8, fig.height=4}
+```{r step6, fig.width=8, fig.height=4}
 max.graph <- daily.summary.stats %>%
   # subset the statistic we want
   filter(name == "TMAX") %>%
@@ -99,7 +99,7 @@ max.graph
 
 Step 7. Draw ribbons for the percentile bands.
 
-```{r, fig.width=8, fig.height=4}
+```{r step7, fig.width=8, fig.height=4}
 max.graph <- max.graph +
   # ribbon between the lowest and 5th, 95th and max percentiles
   geom_ribbon(aes(ymin = min, ymax = max),
@@ -118,7 +118,7 @@ max.graph
 
 Step 8. Add y-axis lines above ribbons
 
-```{r, fig.width=8, fig.height=4}
+```{r step8, fig.width=8, fig.height=4}
  max.graph <- max.graph +
   # y-axis breaks
   geom_hline(yintercept = seq(-10, 100, 10),
@@ -128,7 +128,7 @@ max.graph
 
 Step 9. Add this year's data
 
-```{r, fig.width=8, fig.height=4}
+```{r step9, fig.width=8, fig.height=4}
  max.graph <- max.graph +
   geom_line(data = this.year,
             aes(y = TMAX), lwd = 1) +
@@ -146,7 +146,7 @@ max.graph
 ```
 
 Step 10. Format axis.
-```{r, fig.width=8, fig.height=4}
+```{r step10, fig.width=8, fig.height=4}
 max.graph <- max.graph +
   scale_y_continuous(breaks = seq(-10, 100, 10),
                      labels = scales::unit_format(suffix = "°"),
@@ -161,7 +161,7 @@ max.graph
 ```
 
 Step 11. Add labels
-```{r, fig.width=8, fig.height=4}
+```{r step11, fig.width=8, fig.height=4}
 max.graph <- max.graph +
   labs(title = "Daily High Temperature at Milwaukee's Mitchell Airport",
        subtitle = paste("The line shows daily highs for",
@@ -175,7 +175,7 @@ max.graph
 ```
 
 Step 12. Format theme
-```{r, fig.width=8, fig.height=4}
+```{r step12, fig.width=8, fig.height=4}
 max.graph <- max.graph +
   theme(panel.background = element_blank(),
         panel.border = element_blank(),
@@ -189,7 +189,7 @@ max.graph
 ```
 
 Step 13. Create data for legend.
-```{r}
+```{r step13}
 # data for ribbons
 legend.df <- daily.summary.stats %>%
   filter(day_of_year %in% 165:201,
@@ -242,7 +242,7 @@ legend.labels <- legend.df %>%
 ```
 
 Step 14. Add legend ribbons and line.
-```{r, fig.width=8, fig.height=4}
+```{r step14, fig.width=8, fig.height=4}
 max.graph <- max.graph +
   # ribbon between the lowest and 5th percentiles
   geom_ribbon(data = legend.df,
@@ -265,7 +265,7 @@ max.graph
 ```
 
 Step 15. Add legend records
-```{r, fig.width=8, fig.height=4}
+```{r step15, fig.width=8, fig.height=4}
 max.graph <- max.graph +
   geom_point(aes(x = 177, y = legend.line.df$temp[legend.line.df$day_of_year == 177]),
              color = "blue") +
@@ -281,7 +281,7 @@ max.graph
 ```
 
 Step 16. Add legend ribbon labels.
-```{r, fig.width=8, fig.height=4}
+```{r step16, fig.width=8, fig.height=4}
 max.graph <- max.graph +
   ggrepel::geom_text_repel(data = filter(legend.labels,
                                          filter_day == max(filter_day)),
