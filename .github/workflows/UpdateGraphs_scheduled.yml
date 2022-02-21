@@ -1,6 +1,6 @@
 on:
  schedule:
-   - cron: "0 16 * * *"
+   - cron: "0 18 * * *"
 
 name: Milwaukee weather update
 
