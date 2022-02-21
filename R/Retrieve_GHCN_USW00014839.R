@@ -6,6 +6,9 @@ library(tidyr)
 # station readme
 #   https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/by_station/readme-by_station.txt
 
+# data readme
+#   https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/readme.txt
+
 # download the zipped file
 temp <- tempfile()
 download.file("https://www1.ncdc.noaa.gov/pub/data/ghcn/daily/by_station/USW00014839.csv.gz",temp)
