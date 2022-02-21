@@ -2,11 +2,11 @@
 
 This repository creates the weather graph below (inspired by [Edward Tufte](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=00014g)) using R's {{ggplot2}} package. Updated data is pulled directly from NOAA's FTP servers. The entire process is automated using Github Actions.
 
-This repo may be useful for three kinds of users.
+This repo may be useful in three ways.
 
-1. Those interested in replicating or adapting this graph for a different weather station
-2. Those interested in learning more about data viz with ggplot2
-3. Those interested in learning more about Github Actions with R
+1. replicating or adapting this graph for a different weather station
+2. learning more about data viz with ggplot2
+3. learning more about Github Actions with R
 
 Full disclosure: I'm a novice Github Actions user. This repo reflects my best understanding of Github Actions, and I plan to update it has my skills improve.
 
