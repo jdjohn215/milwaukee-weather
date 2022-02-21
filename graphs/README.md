@@ -58,14 +58,14 @@ head(ghcn)
 ```
 
     ## # A tibble: 6 × 10
-    ##    year month day   date       day_of_year   PRCP  SNOW  SNWD  TMAX  TMIN
-    ##   <dbl> <chr> <chr> <date>           <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl>
-    ## 1  1949 01    01    1949-01-01           1 0          0     0  28.9  14  
-    ## 2  1949 01    02    1949-01-02           2 0          0     0  35.1  18.0
-    ## 3  1949 01    03    1949-01-03           3 0.0197     0     0  37.0  33.1
-    ## 4  1949 01    04    1949-01-04           4 0.272      0     0  41    36.0
-    ## 5  1949 01    05    1949-01-05           5 0          0     0  39.0  17.1
-    ## 6  1949 01    06    1949-01-06           6 0          0     0  39.9  17.1
+    ##    year month day   date       day_of_year    PRCP  SNOW  SNWD  TMAX  TMIN
+    ##   <dbl> <chr> <chr> <date>           <dbl>   <dbl> <dbl> <dbl> <dbl> <dbl>
+    ## 1  1938 04    01    1938-04-01          91 NA         NA    NA  36.0  30.0
+    ## 2  1938 04    02    1938-04-02          92  0         NA    NA  33.1  27.0
+    ## 3  1938 04    03    1938-04-03          93  0          0     0  37.9  25.0
+    ## 4  1938 04    04    1938-04-04          94 NA         NA    NA  37.9  27.0
+    ## 5  1938 04    05    1938-04-05          95 NA         NA    NA  32    25.0
+    ## 6  1938 04    06    1938-04-06          96  0.0906     0     0  32    28.0
 
 Step 2. Identify latest year and day.
 
@@ -176,7 +176,7 @@ max.graph <- daily.summary.stats %>%
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/step6-1.png)<!-- -->
 
 Step 7. Draw ribbons for the percentile bands.
 
@@ -197,7 +197,7 @@ max.graph <- max.graph +
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/step7-1.png)<!-- -->
 
 Step 8. Add y-axis lines above ribbons
 
@@ -209,7 +209,7 @@ Step 8. Add y-axis lines above ribbons
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/step8-1.png)<!-- -->
 
 Step 9. Add this year’s data
 
@@ -230,7 +230,7 @@ Step 9. Add this year’s data
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/step9-1.png)<!-- -->
 
 Step 10. Format axis.
 
@@ -248,7 +248,7 @@ max.graph <- max.graph +
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/step10-1.png)<!-- -->
 
 Step 11. Add labels
 
@@ -265,7 +265,7 @@ max.graph <- max.graph +
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/step11-1.png)<!-- -->
 
 Step 12. Format theme
 
@@ -282,7 +282,7 @@ max.graph <- max.graph +
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/step12-1.png)<!-- -->
 
 Step 13. Create data for legend.
 
@@ -362,7 +362,7 @@ max.graph <- max.graph +
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/step14-1.png)<!-- -->
 
 Step 15. Add legend records
 
@@ -381,7 +381,7 @@ max.graph <- max.graph +
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/step15-1.png)<!-- -->
 
 Step 16. Add legend ribbon labels.
 
@@ -400,4 +400,4 @@ max.graph <- max.graph +
 max.graph
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/step16-1.png)<!-- -->
