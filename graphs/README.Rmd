@@ -20,7 +20,7 @@ library(tidyr)
 library(dplyr)
 library(lubridate)
 library(stringr)
-ghcn <- read_csv("data/GHCN_USW00014839.csv")
+ghcn <- read_csv(here::here("data/GHCN_USW00014839.csv"))
 head(ghcn)
 ```
 
