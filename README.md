@@ -40,8 +40,11 @@ The image `graphs/DailyHighTemp_USW00014839.png` is created by `R/BuidlDailyHigh
 At a high level, the automated workflow:
 
 (1) runs the script to retrieve the updated data
+
 (2) commits the updated dataset to the repository
+
 (3) runs the script to build the graph
+
 (4) commits the graph to the repository. All this takes less than 1 minute per run.
 
 See the README in [/.github/workflows](/.github/workflows) for a line-by-line discussion of the workflow file.
