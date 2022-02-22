@@ -1,6 +1,6 @@
 ## Automated Tufte-style weather graphs
 
-This repository creates the weather graph below (inspired by [Edward Tufte](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=00014g)) using R's {{ggplot2}} package. Updated data is pulled directly from NOAA's FTP servers. The entire process is automated using Github Actions.
+This repository creates the weather graph below (inspired by [Edward Tufte](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=00014g)) using R's {{ggplot2}} package. Updated data is pulled directly from NOAA's servers in CSV format. The entire process is automated using Github Actions.
 
 This repo may be useful in three ways.
 
@@ -8,7 +8,7 @@ This repo may be useful in three ways.
 2. learning more about data viz with ggplot2
 3. learning more about Github Actions with R
 
-Full disclosure: I'm a novice Github Actions user. This repo reflects my best understanding of Github Actions, and I plan to update it has my skills improve.
+Full disclosure: I'm a novice Github Actions user. This repo reflects my best understanding of Github Actions, and I plan to update it as my skills improve.
 
 ![Daily High Temperature in Milwaukee](graphs/DailyHighTemp_USW00014839.png)
 
@@ -18,7 +18,7 @@ NOAA provides daily data for weather stations in the [Global Historical Climatol
 
 **Citation:**
 
-Menne, M.J., I. Durre, B. Korzeniewski, S. McNeal, K. Thomas, X. Yin, S. Anthony, R. Ray, R.S. Vose, B.E.Gleason, and T.G. Houston, 2012: Global Historical Climatology Network - Daily (GHCN-Daily), Version 3.26. NOAA National Climatic Data Center. [http://doi.org/10.7289/V5D21VHZ](http://doi.org/10.7289/V5D21VHZ) [February 21, 2022].
+Menne, M.J., I. Durre, B. Korzeniewski, S. McNeal, K. Thomas, X. Yin, S. Anthony, R. Ray, R.S. Vose, B.E. Gleason, and T.G. Houston, 2012: Global Historical Climatology Network - Daily (GHCN-Daily), Version 3.26. NOAA National Climatic Data Center. [http://doi.org/10.7289/V5D21VHZ](http://doi.org/10.7289/V5D21VHZ) [February 21, 2022].
 
 ## Accessing data for a different station
 
@@ -37,7 +37,12 @@ The image `graphs/DailyHighTemp_USW00014839.png` is created by `R/BuidlDailyHigh
 
 ## Automatic Updating with Github Actions
 
-At a high level, the automated workflow (1) runs the script to retrieve the updated data, (2) commits the updated dataset to the repository, (2) runs the script to build the graph, and (4) commits the graph to the repository. All this takes less than 1 minute per run.
+At a high level, the automated workflow:
+
+(1) runs the script to retrieve the updated data
+(2) commits the updated dataset to the repository
+(3) runs the script to build the graph
+(4) commits the graph to the repository. All this takes less than 1 minute per run.
 
 See the README in [/.github/workflows](/.github/workflows) for a line-by-line discussion of the workflow file.
 
