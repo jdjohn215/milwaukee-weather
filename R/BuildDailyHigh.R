@@ -183,7 +183,7 @@ max.graph2 <- max.graph +
                 label = "all-time record low set this year"),
             hjust = 0, size = 3) +
   geom_text(aes(x = 192, y = legend.line.df$temp[legend.line.df$day_of_year == 189] + 2,
-                label = "all0time record high set this year"),
+                label = "all-time record high set this year"),
             hjust = 0, size = 3) +
   ggrepel::geom_text_repel(data = filter(legend.labels,
                                          filter_day == max(filter_day)),
