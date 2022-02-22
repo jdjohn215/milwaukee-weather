@@ -180,10 +180,10 @@ max.graph2 <- max.graph +
   geom_point(aes(x = 189, y = legend.line.df$temp[legend.line.df$day_of_year == 189]),
              color = "red") +
   geom_text(aes(x = 180, y = legend.line.df$temp[legend.line.df$day_of_year == 177] - 2,
-                label = "record low this year"),
+                label = "all-time record low set this year"),
             hjust = 0, size = 3) +
   geom_text(aes(x = 192, y = legend.line.df$temp[legend.line.df$day_of_year == 189] + 2,
-                label = "record high this year"),
+                label = "all0time record high set this year"),
             hjust = 0, size = 3) +
   ggrepel::geom_text_repel(data = filter(legend.labels,
                                          filter_day == max(filter_day)),
