@@ -100,7 +100,7 @@ cum.precip.graph <- daily.summary.stats %>%
                         "The ribbons cover the",
                         "historical range. The last date shown is", 
                         format(last.date, "%b %d, %Y.")),
-       caption = paste("Records begin on April 1, 1938.",
+       caption = paste("Records begin on January 1, 1939.",
                        "This graph was last updated on", format(Sys.Date(), "%B %d, %Y."))) +
   theme(panel.background = element_blank(),
         panel.border = element_blank(),
