@@ -49,6 +49,12 @@ month.breaks <- ghcn %>%
   select(month, day_of_year) %>%
   mutate(month_name = month.abb)
 
+# pctile labels
+pctile.labels <- daily.summary.stats %>% 
+  filter(day_of_year == 365) %>% 
+  pivot_longer(cols = -day_of_year, names_to = "pctile", values_to = "precip") %>% 
+  mutate(pctile = ifelse(str_sub(pctile, 1, 1) == "x", 
+                         paste0(str_sub(pctile, 2, -1), "th"), pctile))
 
 cum.precip.graph <- daily.summary.stats %>%
   filter(day_of_year < 366) %>%
@@ -73,13 +79,18 @@ cum.precip.graph <- daily.summary.stats %>%
              color = "white", lwd = 0.1) +
   # line for this year's values
   geom_line(data = this.year,
-            aes(y = cum_precip), lwd = 1) +
+            aes(y = cum_precip), lwd = 1.2) +
+  ggrepel::geom_label_repel(data = filter(this.year, day_of_year == max(day_of_year)),
+                            aes(y = cum_precip, label = round(cum_precip, 1)),
+                            point.padding = 5, direction = "y", alpha = 0.5) +
+  geom_segment(data = pctile.labels, aes(x = 365, xend = 367, y = precip, yend = precip)) +
+  geom_text(data = pctile.labels, aes(367.5, precip, label = pctile),
+            hjust = 0, family = "serif") +
   scale_y_continuous(breaks = seq(-10, 100, 10),
-                     labels = scales::unit_format(suffix = "°"),
+                     labels = scales::unit_format(suffix = "in."),
                      expand = expansion(0.01),
-                     name = NULL,
-                     sec.axis = dup_axis()) +
-  scale_x_continuous(expand = expansion(0),
+                     name = NULL) +
+  scale_x_continuous(expand = expansion(c(0, 0.04)),
                      breaks = month.breaks$day_of_year + 15,
                      labels = month.breaks$month_name,
                      name = NULL) +
@@ -99,5 +110,8 @@ cum.precip.graph <- daily.summary.stats %>%
         plot.title.position = "plot",
         plot.title = element_text(face = "bold", size = 16),
         axis.ticks = element_blank())
+
+cum.precip.graph
+
 ggsave("graphs/AnnualCumulativePrecipitation_USW00014839.png", plot = cum.precip.graph,
        width = 8, height = 4)
