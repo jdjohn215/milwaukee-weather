@@ -85,7 +85,7 @@ cum.precip.graph <- daily.summary.stats %>%
                             point.padding = 5, direction = "y", alpha = 0.5) +
   geom_segment(data = pctile.labels, aes(x = 365, xend = 367, y = precip, yend = precip)) +
   geom_text(data = pctile.labels, aes(367.5, precip, label = pctile),
-            hjust = 0, family = "serif") +
+            hjust = 0, family = "serif", size = 3) +
   scale_y_continuous(breaks = seq(-10, 100, 10),
                      labels = scales::unit_format(suffix = "in."),
                      expand = expansion(0.01),
