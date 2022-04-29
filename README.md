@@ -1,6 +1,6 @@
 ## Automated Tufte-style weather graphs
 
-This repository creates the weather graph below (inspired by [Edward Tufte](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=00014g)) using R's {{ggplot2}} package. Updated data is pulled directly from NOAA's servers in CSV format. The entire process is automated using Github Actions.
+This repository creates the weather graphs below (inspired by [Edward Tufte](https://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=00014g)) using R's {{ggplot2}} package. Updated data is pulled directly from NOAA's servers in CSV format. The entire process is automated using Github Actions.
 
 This repo may be useful in three ways.
 
@@ -11,6 +11,7 @@ This repo may be useful in three ways.
 Full disclosure: I'm a novice Github Actions user. This repo reflects my best understanding of Github Actions, and I plan to update it as my skills improve.
 
 ![Daily High Temperature in Milwaukee](graphs/DailyHighTemp_USW00014839.png)
+![Cumulative Annual Precipitation in Milwaukee](graphs/AnnualCumulativePrecipitation_USW00014839.png)
 
 ## About this data
 
@@ -33,7 +34,7 @@ Refer to `R/Retrieve_GHCN_USW00014839.R` for a demonstration of downloading and 
 
 ## Replicating or altering the graph
 
-The image `graphs/DailyHighTemp_USW00014839.png` is created by `R/BuidlDailyHigh.R`. See the README in [/graphs](/graphs) for a step-by-step tutorial.
+The image `graphs/DailyHighTemp_USW00014839.png` is created by `R/BuildDailyHigh.R`. See the README in [/graphs](/graphs) for a step-by-step tutorial.
 
 ## Automatic Updating with Github Actions
 
@@ -43,7 +44,7 @@ At a high level, the automated workflow:
 
 (2) commits the updated dataset to the repository
 
-(3) runs the script to build the graph
+(3) runs the scripts to build the graphs
 
 (4) commits the graph to the repository. All this takes less than 1 minute per run.
 

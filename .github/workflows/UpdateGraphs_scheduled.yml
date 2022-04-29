@@ -42,9 +42,11 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update data
-      - name: Build graph
+      - name: Build temperature graph
         run:  Rscript -e 'source("R/BuildDailyHigh.R")'
-      - name: Commit graph
+      - name: Build precipitation graph
+        run:  Rscript -e 'source("R/BuildCumulativePrecipitation.R")'
+      - name: Commit graphs
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Update graph
+          commit_message: Update graphs
