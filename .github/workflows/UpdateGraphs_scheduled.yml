@@ -1,6 +1,6 @@
 on:
  schedule:
-   - cron: "0 18 * * *"
+   - cron: "0 19 * * *"
 
 name: Milwaukee weather update
 
@@ -8,7 +8,7 @@ jobs:
   render:
     name: Update graphs
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
       RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
