@@ -9,7 +9,7 @@ jobs:
   render:
     name: Update graphs
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     env:
       RENV_PATHS_ROOT: ~/.local/share/renv
     steps:
