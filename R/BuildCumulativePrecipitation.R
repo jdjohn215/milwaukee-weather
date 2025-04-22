@@ -47,7 +47,7 @@ month.breaks <- ghcn |>
   slice_min(order_by = day_of_year, n = 1) |>
   ungroup() |>
   select(month, day_of_year) |>
-  mutate(month_name = month.abb)
+  mutate(month_name = month.abb[1:n()])
 
 # pctile labels
 pctile.labels <- daily.summary.stats |> 
