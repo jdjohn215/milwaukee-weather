@@ -10,14 +10,14 @@ ghcn <- read_csv("data/GHCN_USW00014839.csv")
 year.to.plot <- max(ghcn$year)
 last.date <- max(ghcn$date)
 
-this.year <- ghcn %>%
+this.year <- ghcn |>
   filter(year == year.to.plot)
 
-daily.summary.stats <- ghcn %>%
-  filter(year != year.to.plot) %>%
-  select(day_of_year, PRCP, TMAX, TMIN) %>%
-  pivot_longer(cols = -day_of_year) %>%
-  group_by(day_of_year, name) %>%
+daily.summary.stats <- ghcn |>
+  filter(year != year.to.plot) |>
+  select(day_of_year, PRCP, TMAX, TMIN) |>
+  pivot_longer(cols = -day_of_year) |>
+  group_by(day_of_year, name) |>
   summarise(max = max(value, na.rm = T),
             min = min(value, na.rm = T),
             x5 = quantile(value, 0.05, na.rm = T),
@@ -25,31 +25,31 @@ daily.summary.stats <- ghcn %>%
             x40 = quantile(value, 0.4, na.rm = T),
             x60 = quantile(value, 0.6, na.rm = T),
             x80 = quantile(value, 0.8, na.rm = T),
-            x95 = quantile(value, 0.95, na.rm = T)) %>%
+            x95 = quantile(value, 0.95, na.rm = T)) |>
   ungroup()
 
 # month breaks
-month.breaks <- ghcn %>%
-  filter(year == 2019) %>%
-  group_by(month) %>%
-  slice_min(order_by = day_of_year, n = 1) %>%
-  ungroup() %>%
-  select(month, day_of_year) %>%
+month.breaks <- ghcn |>
+  filter(year == 2019) |>
+  group_by(month) |>
+  slice_min(order_by = day_of_year, n = 1) |>
+  ungroup() |>
+  select(month, day_of_year) |>
   mutate(month_name = month.abb)
 
-record.status.this.year <- this.year %>%
-  select(day_of_year, PRCP, TMAX, TMIN) %>%
-  pivot_longer(cols = -day_of_year, values_to = "this_year") %>%
-  inner_join(daily.summary.stats %>% select(-starts_with("x"))) %>%
+record.status.this.year <- this.year |>
+  select(day_of_year, PRCP, TMAX, TMIN) |>
+  pivot_longer(cols = -day_of_year, values_to = "this_year") |>
+  inner_join(daily.summary.stats |> select(-starts_with("x"))) |>
   mutate(record_status = case_when(
     this_year > max ~ "max",
     this_year < min ~ "min",
     TRUE ~ "none"
-  )) %>%
+  )) |>
   filter(record_status != "none")
 
-max.graph <- daily.summary.stats %>%
-  filter(name == "TMAX") %>%
+max.graph <- daily.summary.stats |>
+  filter(name == "TMAX") |>
   ggplot(aes(x = day_of_year)) +
   # draw vertical lines for the months
   geom_vline(xintercept = c(month.breaks$day_of_year, 365),
@@ -109,9 +109,9 @@ max.graph <- daily.summary.stats %>%
         axis.ticks = element_blank())
 
 
-legend.df <- daily.summary.stats %>%
+legend.df <- daily.summary.stats |>
   filter(day_of_year %in% 165:201,
-         name == "TMAX") %>%
+         name == "TMAX") |>
   mutate(max = max - 60,
          min = min - 60,
          x5 = x5 - 60,
@@ -137,23 +137,23 @@ legend.line.df <- tibble(
     day_of_year == 201 ~ legend.df$x60[legend.df$day_of_year == 201],
     TRUE ~ NA_real_
   )
-) %>%
+) |>
   filter(!is.na(temp))
 
-legend.labels <- legend.df %>%
+legend.labels <- legend.df |>
   pivot_longer(cols = c(max, min, starts_with("x")),
-               names_to = "levels") %>%
+               names_to = "levels") |>
   mutate(label = case_when(
     levels == "max" ~ "max",
     levels == "min" ~ "min",
     levels == "x95" ~ "95th percentile of past years",
     TRUE ~ paste0(str_sub(levels, 2, -1), "th")
-  )) %>%
+  )) |>
   mutate(filter_day = ifelse(
     levels %in% c("max", "x80", "x40", "x5"),
     min(day_of_year),
     max(day_of_year)
-  )) %>%
+  )) |>
   filter(day_of_year == filter_day)
 
 ##  Add legend
