@@ -8,8 +8,6 @@ This repo may be useful in three ways.
 2. learning more about data viz with ggplot2
 3. learning more about Github Actions with R
 
-Full disclosure: I'm a novice Github Actions user. This repo reflects my best understanding of Github Actions, and I plan to update it as my skills improve.
-
 ![Daily High Temperature in Milwaukee](graphs/DailyHighTemp_USW00014839.png)
 ![Cumulative Annual Precipitation in Milwaukee](graphs/AnnualCumulativePrecipitation_USW00014839.png)
 
@@ -42,11 +40,9 @@ At a high level, the automated workflow:
 
 (1) runs the script to retrieve the updated data
 
-(2) commits the updated dataset to the repository
+(2) runs the scripts to build the graphs
 
-(3) runs the scripts to build the graphs
-
-(4) commits the graph to the repository. All this takes less than 1 minute per run.
+(3) commits the data & graphs to the repository. All this takes ~1 minute per run.
 
 See the README in [/.github/workflows](/.github/workflows) for a line-by-line discussion of the workflow file.
 
