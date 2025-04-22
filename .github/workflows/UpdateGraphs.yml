@@ -10,8 +10,7 @@ jobs:
     name: Update graphs
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      RENV_PATHS_ROOT: ~/.local/share/renv
+    
     steps:
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
