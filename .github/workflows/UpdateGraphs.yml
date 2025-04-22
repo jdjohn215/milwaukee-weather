@@ -31,6 +31,7 @@ jobs:
             any::ggrepel
             any::scales
             any::here
+            any::data.table
       
       - name: Check out repository
         uses: actions/checkout@v4
