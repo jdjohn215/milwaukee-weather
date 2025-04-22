@@ -13,11 +13,15 @@ last.date <- max(ghcn$date)
 this.year <- ghcn |>
   filter(year == year.to.plot)
 
+# is this year a leap year?
+is.leap.year <- leap_year(this.year$year[1])
+leap.year.caption <- paste("Records for Leap Day are shown.")
+
 daily.summary.stats <- ghcn |>
   filter(year != year.to.plot) |>
-  select(day_of_year, PRCP, TMAX, TMIN) |>
-  pivot_longer(cols = -day_of_year) |>
-  group_by(day_of_year, name) |>
+  select(month, day, PRCP, TMAX, TMIN) |>
+  pivot_longer(cols = -c(month, day)) |>
+  group_by(month, day, name) |>
   summarise(max = max(value, na.rm = T),
             min = min(value, na.rm = T),
             x5 = quantile(value, 0.05, na.rm = T),
@@ -26,7 +30,16 @@ daily.summary.stats <- ghcn |>
             x60 = quantile(value, 0.6, na.rm = T),
             x80 = quantile(value, 0.8, na.rm = T),
             x95 = quantile(value, 0.95, na.rm = T)) |>
-  ungroup()
+  ungroup() |>
+  mutate(date = as.Date(paste(this.year$year[1], month, day, sep = "-")),
+         day_of_year = yday(date))
+
+# if this year is not a leap year, remove records for February 29th
+if(is.leap.year == FALSE){
+  daily.summary.stats <- daily.summary.stats |>
+    filter(! (month == "02" & day == "29"))
+  leap.year.caption <- paste("Records for February 29th are not shown.")
+}
 
 # month breaks
 month.breaks <- ghcn |>
@@ -38,8 +51,8 @@ month.breaks <- ghcn |>
   mutate(month_name = month.abb[1:n()])
 
 record.status.this.year <- this.year |>
-  select(day_of_year, PRCP, TMAX, TMIN) |>
-  pivot_longer(cols = -day_of_year, values_to = "this_year") |>
+  select(month, day, PRCP, TMAX, TMIN) |>
+  pivot_longer(cols = -c(month, day), values_to = "this_year") |>
   inner_join(daily.summary.stats |> select(-starts_with("x"))) |>
   mutate(record_status = case_when(
     this_year > max ~ "max",
@@ -50,10 +63,7 @@ record.status.this.year <- this.year |>
 
 max.graph <- daily.summary.stats |>
   filter(name == "TMAX") |>
-  ggplot(aes(x = day_of_year)) +
-  # draw vertical lines for the months
-  geom_vline(xintercept = c(month.breaks$day_of_year, 365),
-             linetype = "dotted", lwd = 0.2) +
+  ggplot(aes(x = date)) +
   # ribbon between the lowest and 5th, 95th and max percentiles
   geom_ribbon(aes(ymin = min, ymax = max),
               fill = "#bdc9e1") +
@@ -87,10 +97,13 @@ max.graph <- daily.summary.stats |>
                      expand = expansion(0.01),
                      name = NULL,
                      sec.axis = dup_axis()) +
-  scale_x_continuous(expand = expansion(0),
-                     breaks = month.breaks$day_of_year + 15,
-                     labels = month.breaks$month_name,
-                     name = NULL) +
+  scale_x_date(expand = expansion(0),
+               # the 15th day of each month
+               breaks = unique(daily.summary.stats$date[daily.summary.stats$day == "15"]),
+               labels = scales::label_date(format = "%b"),
+               # the 1st day of each month
+               minor_breaks = unique(daily.summary.stats$date[daily.summary.stats$day == "01"]),
+               name = NULL) +
   labs(title = "Daily High Temperature at Milwaukee's Mitchell Airport",
        subtitle = paste("The line shows daily highs for",
                         paste0(lubridate::year(last.date), "."),
@@ -98,10 +111,15 @@ max.graph <- daily.summary.stats |>
                         "historical range. The last date shown is", 
                         format(last.date, "%b %d, %Y.")),
        caption = paste("Records begin on April 1, 1938.",
-                       "This graph was last updated on", format(Sys.Date(), "%B %d, %Y."))) +
+                       "This graph was last updated on", format(Sys.Date(), "%B %d, %Y."),
+                       leap.year.caption)) +
   theme(panel.background = element_blank(),
         panel.border = element_blank(),
-        panel.grid = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        panel.grid.minor.x = element_line(linetype = "dotted", linewidth = 0.2,
+                                          colour = "gray"),
+        panel.grid.major.x = element_blank(),
         plot.background = element_rect(fill = "linen",
                                        colour = "linen"),
         plot.title.position = "plot",
@@ -138,7 +156,8 @@ legend.line.df <- tibble(
     TRUE ~ NA_real_
   )
 ) |>
-  filter(!is.na(temp))
+  filter(!is.na(temp)) |>
+  mutate(date = as.Date(paste0(this.year$year[1], "-01-01")) + day_of_year)
 
 legend.labels <- legend.df |>
   pivot_longer(cols = c(max, min, starts_with("x")),
@@ -175,16 +194,18 @@ max.graph2 <- max.graph +
               aes(ymin = x40, ymax = x60),
               fill = "#045a8d") +
   geom_line(data = legend.line.df, aes(y = temp), lwd = 0.9) +
-  geom_point(aes(x = 177, y = legend.line.df$temp[legend.line.df$day_of_year == 177]),
-             color = "blue") +
-  geom_point(aes(x = 189, y = legend.line.df$temp[legend.line.df$day_of_year == 189]),
-             color = "red") +
-  geom_text(aes(x = 180, y = legend.line.df$temp[legend.line.df$day_of_year == 177] - 2,
-                label = "all-time record low set this year"),
-            hjust = 0, size = 3) +
-  geom_text(aes(x = 192, y = legend.line.df$temp[legend.line.df$day_of_year == 189] + 2,
-                label = "all-time record high set this year"),
-            hjust = 0, size = 3) +
+  annotate("point", x = min(this.year$date) + 177,
+           y = legend.line.df$temp[legend.line.df$day_of_year == 177],
+           color = "blue", size = 2) +
+  annotate("point", x = min(this.year$date) + 189,
+           y = legend.line.df$temp[legend.line.df$day_of_year == 189],
+           color = "red", size = 2) +
+  annotate("text", x = min(this.year$date) + 180,
+           y = legend.line.df$temp[legend.line.df$day_of_year == 177] - 2,
+           label = "all-time record low set this year", hjust = 0, size = 3) +
+  annotate("text", x = min(this.year$date)+191,
+           y = legend.line.df$temp[legend.line.df$day_of_year == 189] + 2,
+           label = "all-time record high set this year", hjust = 0, size = 3) +
   ggrepel::geom_text_repel(data = filter(legend.labels,
                                          filter_day == max(filter_day)),
                            aes(y = value, label = label),
@@ -198,5 +219,3 @@ max.graph2 <- max.graph +
 
 ggsave("graphs/DailyHighTemp_USW00014839.png", plot = max.graph2,
        width = 8, height = 4)
-
-
