@@ -22,10 +22,6 @@ past.years <- ghcn |>
   filter(n() > 364) |>
   ungroup()
 
-past.years |>
-  ggplot(aes(day_of_year, cum_precip, group = year)) +
-  geom_step(size = 0.1)
-
 daily.summary.stats <- past.years |>
   filter(year != year.to.plot) |>
   select(day_of_year, cum_precip) |>
@@ -61,7 +57,7 @@ cum.precip.graph <- daily.summary.stats |>
   ggplot(aes(x = day_of_year)) +
   # draw vertical lines for the months
   geom_vline(xintercept = c(month.breaks$day_of_year, 365),
-             linetype = "dotted", lwd = 0.2) +
+             linetype = "dotted", linewidth = 0.2) +
   # ribbon between the lowest and 5th, 95th and max percentiles
   geom_ribbon(aes(ymin = min, ymax = max),
               fill = "#bdc9e1") +
@@ -76,10 +72,10 @@ cum.precip.graph <- daily.summary.stats |>
               fill = "#045a8d") +
   # y-axis breaks
   geom_hline(yintercept = seq(0, 50, 5),
-             color = "white", lwd = 0.1) +
+             color = "white", linewidth = 0.1) +
   # line for this year's values
   geom_line(data = this.year,
-            aes(y = cum_precip), lwd = 1.2) +
+            aes(y = cum_precip), linewidth = 1.2) +
   ggrepel::geom_label_repel(data = filter(this.year, day_of_year == max(day_of_year)),
                             aes(y = cum_precip, label = round(cum_precip, 1)),
                             point.padding = 5, direction = "y", alpha = 0.5) +
