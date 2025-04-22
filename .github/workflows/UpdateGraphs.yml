@@ -32,6 +32,7 @@ jobs:
             any::scales
             any::here
             any::data.table
+            any::R.utils
       
       - name: Check out repository
         uses: actions/checkout@v4
