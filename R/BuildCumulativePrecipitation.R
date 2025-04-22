@@ -5,31 +5,31 @@ library(dplyr)
 library(lubridate)
 library(stringr)
 
-ghcn <- read_csv("data/GHCN_USW00014839.csv") %>%
-  group_by(year) %>%
-  arrange(day_of_year) %>%
-  mutate(cum_precip = cumsum(PRCP)) %>%
+ghcn <- read_csv("data/GHCN_USW00014839.csv") |>
+  group_by(year) |>
+  arrange(day_of_year) |>
+  mutate(cum_precip = cumsum(PRCP)) |>
   ungroup()
 
 year.to.plot <- max(ghcn$year)
 last.date <- max(ghcn$date)
 
-this.year <- ghcn %>%
+this.year <- ghcn |>
   filter(year == year.to.plot)
 
-past.years <- ghcn %>%
-  group_by(year) %>%
-  filter(n() > 364) %>%
+past.years <- ghcn |>
+  group_by(year) |>
+  filter(n() > 364) |>
   ungroup()
 
-past.years %>%
+past.years |>
   ggplot(aes(day_of_year, cum_precip, group = year)) +
   geom_step(size = 0.1)
 
-daily.summary.stats <- past.years %>%
-  filter(year != year.to.plot) %>%
-  select(day_of_year, cum_precip) %>%
-  group_by(day_of_year) %>%
+daily.summary.stats <- past.years |>
+  filter(year != year.to.plot) |>
+  select(day_of_year, cum_precip) |>
+  group_by(day_of_year) |>
   summarise(max = max(cum_precip, na.rm = T),
             min = min(cum_precip, na.rm = T),
             x5 = quantile(cum_precip, 0.05, na.rm = T),
@@ -37,27 +37,27 @@ daily.summary.stats <- past.years %>%
             x40 = quantile(cum_precip, 0.4, na.rm = T),
             x60 = quantile(cum_precip, 0.6, na.rm = T),
             x80 = quantile(cum_precip, 0.8, na.rm = T),
-            x95 = quantile(cum_precip, 0.95, na.rm = T)) %>%
+            x95 = quantile(cum_precip, 0.95, na.rm = T)) |>
   ungroup()
 
 # month breaks
-month.breaks <- ghcn %>%
-  filter(year == 2019) %>%
-  group_by(month) %>%
-  slice_min(order_by = day_of_year, n = 1) %>%
-  ungroup() %>%
-  select(month, day_of_year) %>%
+month.breaks <- ghcn |>
+  filter(year == 2019) |>
+  group_by(month) |>
+  slice_min(order_by = day_of_year, n = 1) |>
+  ungroup() |>
+  select(month, day_of_year) |>
   mutate(month_name = month.abb)
 
 # pctile labels
-pctile.labels <- daily.summary.stats %>% 
-  filter(day_of_year == 365) %>% 
-  pivot_longer(cols = -day_of_year, names_to = "pctile", values_to = "precip") %>% 
+pctile.labels <- daily.summary.stats |> 
+  filter(day_of_year == 365) |> 
+  pivot_longer(cols = -day_of_year, names_to = "pctile", values_to = "precip") |> 
   mutate(pctile = ifelse(str_sub(pctile, 1, 1) == "x", 
                          paste0(str_sub(pctile, 2, -1), "th"), pctile))
 
-cum.precip.graph <- daily.summary.stats %>%
-  filter(day_of_year < 366) %>%
+cum.precip.graph <- daily.summary.stats |>
+  filter(day_of_year < 366) |>
   ggplot(aes(x = day_of_year)) +
   # draw vertical lines for the months
   geom_vline(xintercept = c(month.breaks$day_of_year, 365),
