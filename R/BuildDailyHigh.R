@@ -35,7 +35,7 @@ month.breaks <- ghcn |>
   slice_min(order_by = day_of_year, n = 1) |>
   ungroup() |>
   select(month, day_of_year) |>
-  mutate(month_name = month.abb)
+  mutate(month_name = month.abb[1:n()])
 
 record.status.this.year <- this.year |>
   select(day_of_year, PRCP, TMAX, TMIN) |>
