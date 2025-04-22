@@ -97,7 +97,8 @@ cum.precip.graph <- daily.summary.stats |>
                         "historical range. The last date shown is", 
                         format(last.date, "%b %d, %Y.")),
        caption = paste("Records begin on January 1, 1939.",
-                       "This graph was last updated on", format(Sys.Date(), "%B %d, %Y."))) +
+                       "This graph was last updated on", format(Sys.Date(), "%B %d, %Y."),
+                       "Cumulative totals include February 29th during leap years.")) +
   theme(panel.background = element_blank(),
         panel.border = element_blank(),
         panel.grid = element_blank(),
