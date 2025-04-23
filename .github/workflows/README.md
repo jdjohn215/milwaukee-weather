@@ -88,18 +88,6 @@ Essentially, this step simply runs the Rscript to retrieve the new data, but I r
 
 ```
       - name: Retrieve data
-        uses: nick-fields/retry@v2
-        with:
-          timeout_seconds: 30
-          max_attempts: 3
-          command: Rscript -e 'source("R/Retrieve_GHCN_USW00014839.R")'
-          continue_on_error: true
-```
-
-This step commits the data retrieved in the previous step to the repository. Using the [`git-auto-commit-action`](https://github.com/stefanzweifel/git-auto-commit-action) is a simple way to do this. More complicated git commands might need to be written out explicitly.
-
-```
-      - name: Retrieve data
         uses: nick-fields/retry@v3
         with:
           timeout_seconds: 30
@@ -122,7 +110,7 @@ Another step builds the precipitation graph.
         run:  Rscript -e 'source("R/BuildCumulativePrecipitation.R")'
 ```
 
-The final step commits the graph using an [action](https://github.com/stefanzweifel/git-auto-commit-action) with sensible defaults for this purpose.
+The final step commits the graph using an [action](https://github.com/stefanzweifel/git-auto-commit-action) with sensible defaults for this purpose. Using the `git-auto-commit-action` is a simple way to do this. More complicated git commands might need to be written out explicitly.
 
 ```
       - name: Commit graphs
