@@ -202,10 +202,10 @@ max.graph2 <- max.graph +
            color = "red", size = 2) +
   annotate("text", x = min(this.year$date) + 180,
            y = legend.line.df$temp[legend.line.df$day_of_year == 177] - 2,
-           label = "all-time record low set this year", hjust = 0, size = 3) +
+           label = "all-time record lowest daily high set this year", hjust = 0, size = 3) +
   annotate("text", x = min(this.year$date)+191,
            y = legend.line.df$temp[legend.line.df$day_of_year == 189] + 2,
-           label = "all-time record high set this year", hjust = 0, size = 3) +
+           label = "all-time record daily high set this year", hjust = 0, size = 3) +
   ggrepel::geom_text_repel(data = filter(legend.labels,
                                          filter_day == max(filter_day)),
                            aes(y = value, label = label),
