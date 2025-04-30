@@ -31,6 +31,7 @@ daily.summary.stats <- past.years |>
             x5 = quantile(cum_precip, 0.05, na.rm = T),
             x20 = quantile(cum_precip, 0.2, na.rm = T),
             x40 = quantile(cum_precip, 0.4, na.rm = T),
+            x50 = quantile(cum_precip, 0.5, na.rm = T),
             x60 = quantile(cum_precip, 0.6, na.rm = T),
             x80 = quantile(cum_precip, 0.8, na.rm = T),
             x95 = quantile(cum_precip, 0.95, na.rm = T)) |>
@@ -48,9 +49,22 @@ month.breaks <- ghcn |>
 # pctile labels
 pctile.labels <- daily.summary.stats |> 
   filter(day_of_year == 365) |> 
+  select(-x50) |>
   pivot_longer(cols = -day_of_year, names_to = "pctile", values_to = "precip") |> 
   mutate(pctile = ifelse(str_sub(pctile, 1, 1) == "x", 
                          paste0(str_sub(pctile, 2, -1), "th"), pctile))
+
+# compare this year to median
+today.vs.median <- this.year |> 
+  filter(date == max(date)) |>
+  select(date, day_of_year, cum_precip) |>
+  inner_join(daily.summary.stats |> 
+               select(day_of_year, x50))
+median.annotation <- paste("As of", format(last.date, "%B %d, %Y,"),
+                           "Milwaukee has received", round(today.vs.median$cum_precip, 1), 
+                           "cumulative inches of rain, year-to-date,",
+                           "compared with a median of", round(today.vs.median$x50, 1),
+                           "in years since 1939.")
 
 cum.precip.graph <- daily.summary.stats |>
   filter(day_of_year < 366) |>
@@ -99,6 +113,8 @@ cum.precip.graph <- daily.summary.stats |>
        caption = paste("Records begin on January 1, 1939.",
                        "This graph was last updated on", format(Sys.Date(), "%B %d, %Y."),
                        "Cumulative totals include February 29th during leap years.")) +
+  annotate("label", x = 10, y = 45, label = str_wrap(median.annotation, 40),
+           hjust = 0) +
   theme(panel.background = element_blank(),
         panel.border = element_blank(),
         panel.grid = element_blank(),
