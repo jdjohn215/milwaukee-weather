@@ -11,6 +11,13 @@ This repo may be useful in three ways.
 ![Daily High Temperature in Milwaukee](graphs/DailyHighTemp_USW00014839.png)
 ![Cumulative Annual Precipitation in Milwaukee](graphs/AnnualCumulativePrecipitation_USW00014839.png)
 
+## Installing locally
+This project uses {renv} to manage dependencies. Init the environment with
+
+```r
+renv::install()
+```
+
 ## About this data
 
 NOAA provides daily data for weather stations in the [Global Historical Climatological Network](https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily) (GHCN). 
